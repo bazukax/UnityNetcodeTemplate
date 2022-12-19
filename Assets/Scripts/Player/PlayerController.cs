@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 
+
 [RequireComponent(typeof(CharacterController))]
 
 public class PlayerController : NetworkBehaviour
@@ -20,6 +21,7 @@ public class PlayerController : NetworkBehaviour
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
 
+    public GameObject bulletPrefab;
     [HideInInspector]
     public bool canMove = true;
 
@@ -38,6 +40,8 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         if(!IsOwner)return;
+
+         if (Input.GetKeyDown(KeyCode.E)) ShootServerRPC();
         if(  playerCamera.enabled == false)  playerCamera.enabled = true;
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -77,5 +81,24 @@ public class PlayerController : NetworkBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+    }
+
+    [ServerRpc]
+    private void ShootServerRPC()
+    {
+
+           GameObject m_MyBullet = Instantiate(bulletPrefab, transform.position + transform.forward *2 + transform.right, Quaternion.identity);
+           m_MyBullet.transform.rotation = transform.rotation;
+           m_MyBullet.GetComponent<NetworkObject>().Spawn();
+
+            m_MyBullet = Instantiate(bulletPrefab, transform.position + transform.forward *2 - transform.right, Quaternion.identity);
+           m_MyBullet.transform.rotation = transform.rotation;
+           m_MyBullet.GetComponent<NetworkObject>().Spawn();
+    }
+
+    [ClientRpc]
+    public void RespawnClientRpc()
+    {
+        this.transform.position = new Vector3(Random.Range(-10,10),5,Random.Range(-10,10));
     }
 }

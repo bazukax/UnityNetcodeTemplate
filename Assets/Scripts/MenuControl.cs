@@ -28,6 +28,22 @@ public class MenuControl : MonoBehaviour
             Debug.LogError("Failed to start host.");
         }
     }
+     public void StartOpenGame()
+    {
+        // Update the current HostNameInput with whatever we have set in the NetworkConfig as default
+        var utpTransport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
+        if (utpTransport) utpTransport.SetConnectionData(Sanitize(m_HostIpInput.text), 7777);
+        
+        if (NetworkManager.Singleton.StartHost())
+        {
+            SceneTransitionHandler.sceneTransitionHandler.RegisterCallbacks();
+            SceneTransitionHandler.sceneTransitionHandler.SwitchScene(m_LobbySceneName);
+        }
+        else
+        {
+            Debug.LogError("Failed to start host.");
+        }
+    }
 
     public void JoinLocalGame()
     {
