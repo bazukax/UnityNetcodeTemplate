@@ -33,8 +33,8 @@ public class PlayerController : NetworkBehaviour
 
         // Lock cursor
         if(SceneManager.GetActiveScene().buildIndex != 3)return;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+       // Cursor.visible = false;
     }
 
     void Update()
