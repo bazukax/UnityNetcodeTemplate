@@ -41,6 +41,19 @@ public class PlayerController : NetworkBehaviour
     {
         if(!IsOwner)return;
 
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(Cursor.lockState == CursorLockMode.None)
+            {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            }else
+            {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            }
+
+        }
          if (Input.GetKeyDown(KeyCode.E)) ShootServerRPC();
         if(  playerCamera.enabled == false)  playerCamera.enabled = true;
         // We are grounded, so recalculate move direction based on axes
@@ -99,6 +112,22 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void RespawnClientRpc()
     {
-        this.transform.position = new Vector3(Random.Range(-10,10),5,Random.Range(-10,10));
+        if(!IsOwner)return;
+        characterController.Move( new Vector3(Random.Range(-10,10),5,Random.Range(-10,10)));
+        Debug.Log("CLIENTRPC");
+    }
+    [ServerRpc]
+    public void RespawnServerRpc()
+    {
+       
+        Debug.Log("SERVERRPC");
+        characterController.Move( new Vector3(Random.Range(-10,10),5,Random.Range(-10,10)));
+       
+        //RespawnClientRpc();
+    }
+    public void Respawn()
+    {
+        RespawnClientRpc();
+       // RespawnServerRpc();
     }
 }

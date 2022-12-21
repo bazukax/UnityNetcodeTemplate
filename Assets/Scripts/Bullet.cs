@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NetworkBehaviour
 {
     public float speed;
     void Start()
     {
-        Destroy(gameObject,15);
+        Invoke("DespawnBullet",15);
+    }
+    void DespawnBullet()
+    {
+        if(IsServer)GetComponent<NetworkObject>().Despawn();
     }
     void Update()
     {
@@ -16,13 +20,15 @@ public class Bullet : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
+        /*
          if (!NetworkManager.Singleton.IsServer)
             return;
-        
+        */
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerController>().RespawnClientRpc();
+            collision.gameObject.GetComponent<PlayerController>().Respawn();
+            //collision.gameObject.transform.position = new Vector3(Random.Range(-10,10),5,Random.Range(-10,10));
         }
-        Destroy(gameObject);
+        if(IsServer)GetComponent<NetworkObject>().Despawn();
     }
 }
