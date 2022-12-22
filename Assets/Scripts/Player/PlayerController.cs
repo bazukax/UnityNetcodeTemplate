@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -22,6 +23,7 @@ public class PlayerController : NetworkBehaviour
     float rotationX = 0;
 
     public GameObject bulletPrefab;
+    public TMP_Text playerNameText;
     [HideInInspector]
     public bool canMove = true;
 
@@ -35,6 +37,10 @@ public class PlayerController : NetworkBehaviour
         if(SceneManager.GetActiveScene().buildIndex != 3)return;
         //Cursor.lockState = CursorLockMode.Locked;
        // Cursor.visible = false;
+    }
+    public override void OnNetworkSpawn()
+    {
+        playerNameText.text = "Player " + NetworkManager.LocalClientId;
     }
 
     void Update()
