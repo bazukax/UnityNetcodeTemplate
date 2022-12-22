@@ -24,6 +24,8 @@ public class PlayerController : NetworkBehaviour
 
     public GameObject bulletPrefab;
     public TMP_Text playerNameText;
+
+
     [HideInInspector]
     public bool canMove = true;
 
@@ -38,10 +40,7 @@ public class PlayerController : NetworkBehaviour
         //Cursor.lockState = CursorLockMode.Locked;
        // Cursor.visible = false;
     }
-    public override void OnNetworkSpawn()
-    {
-        playerNameText.text = "Player " + NetworkManager.LocalClientId;
-    }
+
 
     void Update()
     {
@@ -122,18 +121,24 @@ public class PlayerController : NetworkBehaviour
         characterController.Move( new Vector3(Random.Range(-10,10),5,Random.Range(-10,10)));
         Debug.Log("CLIENTRPC");
     }
-    [ServerRpc]
-    public void RespawnServerRpc()
-    {
-       
-        Debug.Log("SERVERRPC");
-        characterController.Move( new Vector3(Random.Range(-10,10),5,Random.Range(-10,10)));
-       
-        //RespawnClientRpc();
-    }
+   // [ServerRpc]
     public void Respawn()
     {
         RespawnClientRpc();
        // RespawnServerRpc();
     }
+
+    [ServerRpc]
+    private void UpdateNameServerRPC(ulong clientid)
+    {
+        UpdateNameClientRPC(clientid);
+    }
+    [ClientRpc]
+    private void UpdateNameClientRPC(ulong clientid)
+    {
+           // if(!IsOwner)return;
+       playerNameText.text = "Player " + clientid;
+
+    }
+
 }

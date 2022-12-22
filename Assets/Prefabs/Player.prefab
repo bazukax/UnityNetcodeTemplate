@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: -5279659333390603494}
   - component: {fileID: 5479184246426809777}
   - component: {fileID: 7586693945013215608}
+  - component: {fileID: 5502867205044782358}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -525,6 +526,19 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1225521363136895606, guid: 73c7865339adaf041953626ca69de0f6, type: 3}
   playerNameText: {fileID: 3685790023863703139}
   canMove: 1
+--- !u!114 &5502867205044782358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905156238468957155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079be669de67b754ca11b728e3fd04d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNameText: {fileID: 3685790023863703139}
 --- !u!1 &3905156238656368669
 GameObject:
   m_ObjectHideFlags: 0

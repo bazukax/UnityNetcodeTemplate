@@ -12,9 +12,16 @@ public class GlobalVideoBox : NetworkBehaviour
     [SerializeField]
     VideoPlayer videoPlayer;
 
+    private NetworkVariable<int> videoPlayerFrame = new NetworkVariable<int>();
+  
+
      public void UpdateURL()
     {
          RequestURLUpdateServerRPC(inputField.text);
+    }
+    public override void OnNetworkSpawn()
+    {
+       SyncVideoClientRpc();
     }
 
     [ServerRpc(RequireOwnership =false)]
@@ -27,5 +34,19 @@ public class GlobalVideoBox : NetworkBehaviour
     {
         videoPlayer.url = url;
         videoPlayer.Play();
+    }
+
+    [ClientRpc]
+    void SyncVideoClientRpc()
+    {
+        if (IsServer)
+       {
+        videoPlayerFrame.Value = (int)videoPlayer.frame;
+       }
+        videoPlayer.frame = videoPlayerFrame.Value;
+    }
+    public void SyncTime()
+    {
+        SyncVideoClientRpc();
     }
 }
