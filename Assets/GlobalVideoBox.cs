@@ -13,7 +13,10 @@ public class GlobalVideoBox : NetworkBehaviour
     VideoPlayer videoPlayer;
 
     private NetworkVariable<int> videoPlayerFrame = new NetworkVariable<int>();
-  
+    public void Update()
+    {
+        if(IsServer)videoPlayerFrame.Value = (int)videoPlayer.frame;
+    }
 
      public void UpdateURL()
     {
@@ -22,6 +25,7 @@ public class GlobalVideoBox : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
        SyncVideoClientRpc();
+       Invoke("SyncTime",5);
     }
 
     [ServerRpc(RequireOwnership =false)]
@@ -35,18 +39,20 @@ public class GlobalVideoBox : NetworkBehaviour
         videoPlayer.url = url;
         videoPlayer.Play();
     }
+    
+    [ServerRpc(RequireOwnership =false)]
+      void SyncVideoServerRPC()
+    {
+        SyncVideoClientRpc();
+    }
 
     [ClientRpc]
     void SyncVideoClientRpc()
     {
-        if (IsServer)
-       {
-        videoPlayerFrame.Value = (int)videoPlayer.frame;
-       }
         videoPlayer.frame = videoPlayerFrame.Value;
     }
     public void SyncTime()
     {
-        SyncVideoClientRpc();
+        SyncVideoServerRPC();
     }
 }
