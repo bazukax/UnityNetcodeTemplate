@@ -55,5 +55,9 @@ public class Table : MonoBehaviour
     {
         return cells;
     }
+    public int GetRowCellCount()
+    {
+        return rowCellCount;
+    }
 
 }
