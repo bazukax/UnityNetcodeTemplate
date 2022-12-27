@@ -9,20 +9,51 @@ public class Table : MonoBehaviour
 
     [SerializeField] private GameObject cellPrefab;
 
-    [SerializeField] private List<GameObject> cells= new List<GameObject>();
+    [SerializeField] private List<GameObject> cells = new List<GameObject>();
 
-    [SerializeField] private int cellCount = 44;
+    [SerializeField] private int initialCellCount = 44;
+
+    [SerializeField] private int rowCellCount = 11;
     void Start()
     {
-       
-        for(int i= 0; i < cellCount; i++)
+        for (int i = 0; i < initialCellCount; i++)
         {
-             GameObject cell = Instantiate(cellPrefab,transform.position,Quaternion.identity);
-             cell.transform.SetParent (parent.transform, false);
-            RectTransform rt = cell.GetComponent<RectTransform>();
-          
-             cells.Add(cell);
+            AddCell();
         }
+    }
+    public void AddCell()
+    {
+        GameObject cell = Instantiate(cellPrefab, transform.position, Quaternion.identity);
+        cell.transform.SetParent(parent.transform, false);
+        cells.Add(cell);
+    }
+    public void AddCells(int cellCount = 0)
+    {
+        for (int i = 0; i < cellCount; i++)
+        {
+            AddCell();
+        }
+    }
+    public void AddRow()
+    {
+        for (int i = 0; i < rowCellCount; i++)
+        {
+            AddCell();
+        }
+    }
+    public void AddRows(int rowsCount)
+    {
+        for (int j = 0; j < rowsCount;j++)
+        {
+            for (int i = 0; i < rowCellCount; i++)
+            {
+                AddCell();
+            }
+        }
+    }
+    public List<GameObject> GetCells()
+    {
+        return cells;
     }
 
 }
