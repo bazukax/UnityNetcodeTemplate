@@ -105,11 +105,11 @@ public class PlayerController : NetworkBehaviour
     private void ShootServerRPC()
     {
 
-           GameObject m_MyBullet = Instantiate(bulletPrefab, transform.position + transform.forward *2 + transform.right, Quaternion.identity);
+           GameObject m_MyBullet = Instantiate(bulletPrefab, transform.position + transform.forward *2 + transform.right + Vector3.up, Quaternion.identity);
            m_MyBullet.transform.rotation = transform.rotation;
            m_MyBullet.GetComponent<NetworkObject>().Spawn();
 
-            m_MyBullet = Instantiate(bulletPrefab, transform.position + transform.forward *2 - transform.right, Quaternion.identity);
+            m_MyBullet = Instantiate(bulletPrefab, transform.position + transform.forward *2 - transform.right + Vector3.up, Quaternion.identity);
            m_MyBullet.transform.rotation = transform.rotation;
            m_MyBullet.GetComponent<NetworkObject>().Spawn();
     }
