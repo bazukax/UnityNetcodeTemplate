@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class AvatarChanger : MonoBehaviour
+public class AvatarChanger : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void ChangeAvatar(int avatarValue)
     {
-        
+        FindPlayer().gameObject.GetComponentInChildren<PlayerAvatar>().SetPlayerAvatar(avatarValue);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void IncrementAvatar()
     {
-        
+
+        FindPlayer().gameObject.GetComponentInChildren<PlayerAvatar>().IncrementPlayerAvatar();
+    }
+    public void DecrementAvatar()
+    {
+        FindPlayer().gameObject.GetComponentInChildren<PlayerAvatar>().DecrementPlayerAvatar();
+    }
+    public GameObject FindPlayer()
+    {
+        return NetworkManager.LocalClient.PlayerObject.gameObject;
     }
 }

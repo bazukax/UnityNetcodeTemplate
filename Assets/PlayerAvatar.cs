@@ -8,10 +8,7 @@ public class PlayerAvatar : NetworkBehaviour
     [SerializeField] NetworkVariable<int> avatarId = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [SerializeField] List<GameObject> avatarPrefabs;
-    void Start()
-    {
-
-    }
+    private float updateDuration = 0.1f;
 
     void Update()
     {
@@ -22,7 +19,7 @@ public class PlayerAvatar : NetworkBehaviour
             if (avatarId.Value < avatarPrefabs.Count - 1)
             {
                 ChangeHatId((avatarId.Value + 1));
-                Invoke("UpdateavatarPrefabserverRPC", 0.1f);
+                Invoke("UpdateavatarPrefabserverRPC", updateDuration);
             }
         }
         if (Input.GetKeyDown(KeyCode.R))
@@ -30,10 +27,35 @@ public class PlayerAvatar : NetworkBehaviour
             if (avatarId.Value > 0)
             {
                 ChangeHatId(avatarId.Value - 1);
-                Invoke("UpdateavatarPrefabserverRPC", 0.1f);
+                Invoke("UpdateavatarPrefabserverRPC", updateDuration);
             }
         }
     }
+    public void SetPlayerAvatar(int Value)
+    {
+        if (avatarId.Value < avatarPrefabs.Count - 1 && avatarId.Value > 0)
+        {
+            ChangeHatId((avatarId.Value));
+            Invoke("UpdateavatarPrefabserverRPC", updateDuration);
+        }
+    }
+    public void IncrementPlayerAvatar()
+    {
+        if (avatarId.Value < avatarPrefabs.Count - 1)
+            {
+                ChangeHatId((avatarId.Value + 1));
+                Invoke("UpdateavatarPrefabserverRPC", updateDuration);
+            }
+    }
+    public void DecrementPlayerAvatar()
+    {
+         if (avatarId.Value > 0)
+            {
+                ChangeHatId(avatarId.Value - 1);
+                Invoke("UpdateavatarPrefabserverRPC", updateDuration);
+            }
+    }
+
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
