@@ -18,7 +18,7 @@ public class TableToSheet : MonoBehaviour
         cells = table.GetCells();
         filepath = Application.dataPath + "/" + fileName;
         Invoke("WriteCSV",5);
-        Invoke("SaveToGoogleSheets",3);
+        //Invoke("SaveToGoogleSheets",3);
     }
     public void SaveToCSV()
     {
@@ -52,12 +52,13 @@ public class TableToSheet : MonoBehaviour
       //  PUT https://sheets.googleapis.com/v4/spreadsheets/1nvF0ZXtj76Hkky5EIYMTS1kuoO5k32SpvwgAYKPYPXE/values/Sheet1!A1:D5?valueInputOption=USER_ENTERED
 
       //https://docs.google.com/spreadsheets/d/1nvF0ZXtj76Hkky5EIYMTS1kuoO5k32SpvwgAYKPYPXE/edit#gid=0
+      //https://docs.google.com/spreadsheets/d/1X7n0efk96PvKeS9ps1wXr7jcqopuxonBQDiuMayjjtU/edit#gid=0
       Upload();
     }
     IEnumerator Upload()
     {
         byte[] myData = System.Text.Encoding.UTF8.GetBytes("This is some test data");
-        using (UnityWebRequest www = UnityWebRequest.Put("https://sheets.googleapis.com/v4/spreadsheets/1nvF0ZXtj76Hkky5EIYMTS1kuoO5k32SpvwgAYKPYPXE/values/Sheet1!A1:D5?valueInputOption=USER_ENTERED", myData))
+        using (UnityWebRequest www = UnityWebRequest.Put("https://docs.google.com/spreadsheets/d/1X7n0efk96PvKeS9ps1wXr7jcqopuxonBQDiuMayjjtU/values/Sheet1!A1:D5?valueInputOption=USER_ENTERED", myData))
         {
             yield return www.SendWebRequest();
 
