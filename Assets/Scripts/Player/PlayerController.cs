@@ -14,7 +14,7 @@ public class PlayerController : NetworkBehaviour
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
-    public Camera playerCamera;
+    public GameObject playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
 
@@ -32,7 +32,7 @@ public class PlayerController : NetworkBehaviour
     void Start()
     {
         if(!IsOwner)return;
-        playerCamera.enabled = true;
+        playerCamera.SetActive(true);
         characterController = GetComponent<CharacterController>();
 
         // Lock cursor
@@ -60,7 +60,7 @@ public class PlayerController : NetworkBehaviour
 
         }
          if (Input.GetKeyDown(KeyCode.E)) ShootServerRPC();
-        if(  playerCamera.enabled == false)  playerCamera.enabled = true;
+        if(  playerCamera.activeSelf == false)  playerCamera.SetActive(true);
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
